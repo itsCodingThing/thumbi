@@ -1,7 +1,5 @@
 use std::env;
 use tauri::Manager;
-use tauri::PhysicalSize;
-use tauri::Size;
 
 mod commands;
 mod ffmpeg;
@@ -17,11 +15,6 @@ pub fn run() {
             // setup basic config for app
             window.set_title("thumbi")?;
             window.set_resizable(false)?;
-            window.set_size(Size::Physical(PhysicalSize {
-                width: 600,
-                height: 600,
-            }))?;
-
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())

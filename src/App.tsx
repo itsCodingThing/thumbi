@@ -16,17 +16,17 @@ function App() {
     ffmpegPath: "",
   });
 
-  const selectBinFile = async () => {
-    const blob = await fileOpen({
-      multiple: false,
-      directory: false,
-    });
-    console.log(blob);
+  // const selectBinFile = async () => {
+  //   const blob = await fileOpen({
+  //     multiple: false,
+  //     directory: false,
+  //   });
+  //   console.log(blob);
 
-    if (blob) {
-      setPath({ ...path, ffmpegPath: blob });
-    }
-  };
+  //   if (blob) {
+  //     setPath({ ...path, ffmpegPath: blob });
+  //   }
+  // };
 
   const selectFile = async () => {
     const blob = await fileOpen({
@@ -81,8 +81,7 @@ function App() {
   };
 
   return (
-    <main className="container min-h-svh p-1 bg-red-300">
-      <h1 className="text-2xl font-bold text-center">Create Thumbnail</h1>
+    <main className="container min-h-svh flex items-center justify-center bg-black">
       <Card>
         <CardContent>
           <form className="grid gap-4">
