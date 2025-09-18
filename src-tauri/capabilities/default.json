@@ -2,11 +2,11 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
-    "opener:default",
-    "dialog:default",
     "shell:default",
     {
       "identifier": "shell:allow-execute",
@@ -15,14 +15,20 @@
           "name": "binaries/ffmpeg",
           "args": [
             "-i",
-            { "validator": "\\S+" },
+            {
+              "validator": "\\S+"
+            },
             "-vf",
             "fps=1/10",
-            { "validator": "\\S+" }
+            {
+              "validator": "\\S+"
+            }
           ],
           "sidecar": true
         }
       ]
-    }
+    },
+    "opener:default",
+    "dialog:default"
   ]
 }
