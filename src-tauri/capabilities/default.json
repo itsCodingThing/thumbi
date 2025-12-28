@@ -1,21 +1,26 @@
 {
-  "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "default",
-  "description": "Capability for the main window",
-  "windows": ["main"],
-  "permissions": [
-    "opener:default",
-    "dialog:default",
-    "core:default",
-    {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        {
-          "name": "binaries/ffmpeg",
-          "args": true,
-          "sidecar": true
-        }
-      ]
-    }
-  ]
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "default",
+	"description": "Capability for the main window",
+	"windows": ["main"],
+	"permissions": [
+		"opener:default",
+		"dialog:default",
+		"core:default",
+		{
+			"identifier": "shell:allow-execute",
+			"allow": [
+				{
+					"name": "binaries/ffmpeg",
+					"args": true,
+					"sidecar": true
+				},
+				{
+					"name": "binaries/ffprobe",
+					"args": true,
+					"sidecar": true
+				}
+			]
+		}
+	]
 }

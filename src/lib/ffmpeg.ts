@@ -25,13 +25,8 @@ export async function changeFormat(options: ChangeFormatOptions) {
 		args.splice(2, 2);
 	}
 
-	console.log("change format options: ", args);
 	const command = Command.sidecar("binaries/ffmpeg", args);
-
-	const output = await command.execute();
-	const response = output.stdout;
-
-	console.log("function generate_thumbnail is called: ", response);
+	await command.execute();
 }
 
 export async function generateThumbnail(source: string, destination: string) {
@@ -43,10 +38,7 @@ export async function generateThumbnail(source: string, destination: string) {
 		`${destination}/thumbnail_%03d.jpg`,
 	]);
 
-	const output = await command.execute();
-	const response = output.stdout;
-
-	console.log("function generate_thumbnail is called: ", response);
+	await command.execute();
 }
 
 const formatSchema = zod.object({

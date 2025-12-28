@@ -1,102 +1,111 @@
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  SupportedVideoFormats,
-  type VideoFormat,
-  changeFormat,
-  isSupportedVideoFormat,
+	SupportedVideoFormats,
+	type VideoFormat,
+	changeFormat,
+	isSupportedVideoFormat,
 } from "@/lib/ffmpeg";
 import { useSourceFile } from "@/components/select-source-file/proiver";
 import { fileSave } from "@/lib/file-dialog";
+import { toast } from "sonner";
+import { useFullScreenLoader } from "@/components/full-screen-loader";
 
 export default function FormatForm() {
-  const { sourceFile } = useSourceFile();
-  const [path, setPath] = useState("");
-  const [format, setFormat] = useState<VideoFormat>("mp4");
-  const [isPending, startTransition] = useTransition();
+	const { setScreenLoader } = useFullScreenLoader();
+	const { sourceFile } = useSourceFile();
+	const [destination, setDestination] = useState("");
+	const [format, setFormat] = useState<VideoFormat>("mp4");
 
-  const selectSave = async () => {
-    const blob = await fileSave({
-      filters: [
-        {
-          name: "Save File",
-          extensions: SupportedVideoFormats.slice(),
-        },
-      ],
-    });
+	const selectSave = async () => {
+		try {
+			const blob = await fileSave({
+				filters: [
+					{
+						name: "Save File",
+						extensions: SupportedVideoFormats.slice(),
+					},
+				],
+			});
 
-    if (!blob) {
-      throw new Error("select path where to save");
-    }
+			if (!blob) {
+				throw new Error("select path where to save");
+			}
 
-    setPath(blob);
-  };
+			setDestination(blob);
+		} catch (error) {
+			toast.error("unable to select destination path");
+			console.log(error);
+		}
+	};
 
-  const change = () => {
-    startTransition(async () => {
-      await changeFormat({
-        source: sourceFile.path,
-        destination: path,
-        format,
-      });
-    });
-  };
+	const change = async () => {
+		setScreenLoader(true);
 
-  return (
-    <Card>
-      <CardContent>
-        <form className="grid grid-cols-2 gap-2">
-          <Input
-            disabled
-            className="col-span-2"
-            type="text"
-            placeholder="select where to store"
-            defaultValue={path}
-          />
-          <Button
-            className="cursor-pointer"
-            type="button"
-            onClick={selectSave}
-          >
-            select save
-          </Button>
-          <Select
-            onValueChange={(v) => {
-              if (isSupportedVideoFormat(v)) {
-                setFormat(v);
-              }
-            }}
-          >
-            <SelectTrigger className="cursor-pointer w-full">
-              <SelectValue placeholder="Format" />
-            </SelectTrigger>
-            <SelectContent>
-              {SupportedVideoFormats.map((f) => (
-                <SelectItem className="cursor-pointer" value={f} key={f}>
-                  {f}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button
-            disabled={isPending}
-            className="col-span-2 cursor-pointer"
-            type="button"
-            onClick={change}
-          >
-            change format
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-  );
+		try {
+			await changeFormat({
+				source: sourceFile.path,
+				destination: destination,
+				format,
+			});
+		} catch (error) {
+			toast.error("unable to change format");
+			console.log(error);
+		}
+
+		setScreenLoader(false);
+	};
+
+	return (
+		<Card>
+			<CardContent>
+				<form className="grid grid-cols-2 gap-2">
+					<Input
+						disabled
+						className="col-span-2"
+						type="text"
+						placeholder="select where to store"
+						defaultValue={destination}
+					/>
+					<Button className="cursor-pointer" type="button" onClick={selectSave}>
+						select save
+					</Button>
+					<Select
+						onValueChange={(v) => {
+							if (isSupportedVideoFormat(v)) {
+								setFormat(v);
+							}
+						}}
+					>
+						<SelectTrigger className="cursor-pointer w-full">
+							<SelectValue placeholder="Format" />
+						</SelectTrigger>
+						<SelectContent>
+							{SupportedVideoFormats.map((f) => (
+								<SelectItem className="cursor-pointer" value={f} key={f}>
+									{f}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+					<Button
+						className="col-span-2 cursor-pointer"
+						type="button"
+						onClick={change}
+					>
+						change format
+					</Button>
+				</form>
+			</CardContent>
+		</Card>
+	);
 }
