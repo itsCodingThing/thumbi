@@ -6,7 +6,7 @@ export interface SourceFileInfo {
 }
 
 interface SourceFileState {
-  state: SourceFileInfo;
+  sourceFile: SourceFileInfo;
   dispatch: Dispatch<Action>;
 }
 

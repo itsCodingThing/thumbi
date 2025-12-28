@@ -13,7 +13,7 @@ const initialState: SourceFileInfo = {
   path: "",
 };
 
-export function useSelectSourceFile() {
+export function useSourceFile() {
   const context = useContext(SelectSourceFileContext);
 
   if (!context) {
@@ -27,7 +27,7 @@ export function useSelectSourceFile() {
 
 export default function SelectSourceFileProvier({ children }: ProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const value = useMemo(() => ({ state, dispatch }), [state]);
+  const value = useMemo(() => ({ sourceFile: state, dispatch }), [state]);
 
   return (
     <SelectSourceFileContext.Provider value={value}>

@@ -1,38 +1,46 @@
-import { open as fileOpen } from "@tauri-apps/plugin-dialog";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useSelectSourceFile } from "@/components/select-source-file/proiver";
+import { useSourceFile } from "@/components/select-source-file/proiver";
+import { toast } from "sonner";
+import { fileOpen } from "@/lib/file-dialog";
 
 export default function SourceFile() {
-	const { state, dispatch } = useSelectSourceFile();
+  const { sourceFile, dispatch } = useSourceFile();
 
-	const selectFile = async () => {
-		const blob = await fileOpen({
-			multiple: false,
-			directory: false,
-		});
+  const selectFile = async () => {
+    try {
+      const blob = await fileOpen({
+        multiple: false,
+        directory: false,
+      });
 
-		if (blob) {
-			dispatch({ type: "UPDATE_PATH", payload: { path: blob } });
-		}
-	};
+      if (!blob) {
+        throw new Error("no path")
+      }
 
-	return (
-		<Card>
-			<CardContent>
-				<div className="flex gap-2">
-					<Input
-						type="text"
-						placeholder="select video file"
-						defaultValue={state.path}
-					/>
-					<Button onClick={selectFile} className="cursor-pointer" type="button">
-						select file
-					</Button>
-				</div>
-			</CardContent>
-		</Card>
-	);
+      dispatch({ type: "UPDATE_PATH", payload: { path: blob } });
+    } catch (error) {
+      toast.error("unable to select path");
+      console.log(error)
+    }
+  };
+
+  return (
+    <Card>
+      <CardContent>
+        <div className="flex flex-col gap-2">
+          <Input
+            disabled
+            type="text"
+            placeholder="select video file"
+            defaultValue={sourceFile.path}
+          />
+          <Button onClick={selectFile} className="cursor-pointer" type="button">
+            select file
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
