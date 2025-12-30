@@ -2,7 +2,6 @@ import "./App.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ThumbnailForm from "@/components/thumbnail-form";
 import FormatForm from "@/components/format-form";
-import SelectSourceFileProvier from "@/components/select-source-file/proiver";
 import SourceFile from "@/components/source-file";
 import { Toaster } from "@/components/ui/sonner";
 import logo from "@/assets/thumbi_logo.png";
@@ -15,7 +14,7 @@ const tabs = {
 
 export default function App() {
 	return (
-		<SelectSourceFileProvier>
+		<>
 			<header className="flex justify-center">
 				<img alt="app logo" src={logo} className="w-25 h-25" />
 			</header>
@@ -43,6 +42,6 @@ export default function App() {
 			</main>
 			<Toaster />
 			<FullScreenLoader />
-		</SelectSourceFileProvier>
+		</>
 	);
 }

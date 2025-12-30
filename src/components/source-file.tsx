@@ -1,13 +1,19 @@
+import { atom, useAtom } from "jotai";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useSourceFile } from "@/components/select-source-file/proiver";
-import { toast } from "sonner";
 import { fileOpen } from "@/lib/file-dialog";
 import { probeVideo } from "@/lib/ffmpeg";
 
+const sourceFilePath = atom("");
+
+export function useSourceFilePath() {
+	return useAtom(sourceFilePath);
+}
+
 export default function SourceFile() {
-	const { sourceFile, dispatch } = useSourceFile();
+	const [sourcePath, setSourcePath] = useSourceFilePath();
 
 	const selectFile = async () => {
 		try {
@@ -23,7 +29,7 @@ export default function SourceFile() {
 			const result = await probeVideo(blob);
 			console.log(result);
 
-			dispatch({ type: "UPDATE_PATH", payload: { path: blob } });
+			setSourcePath(blob);
 		} catch (error) {
 			toast.error("unable to select path");
 			console.log(error);
@@ -38,7 +44,7 @@ export default function SourceFile() {
 						disabled
 						type="text"
 						placeholder="select video file"
-						defaultValue={sourceFile.path}
+						defaultValue={sourcePath}
 					/>
 					<Button onClick={selectFile} className="cursor-pointer" type="button">
 						select file

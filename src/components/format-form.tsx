@@ -15,14 +15,14 @@ import {
 	changeFormat,
 	isSupportedVideoFormat,
 } from "@/lib/ffmpeg";
-import { useSourceFile } from "@/components/select-source-file/proiver";
 import { fileSave } from "@/lib/file-dialog";
 import { toast } from "sonner";
 import { useFullScreenLoader } from "@/components/full-screen-loader";
+import { useSourceFilePath } from "@/components/source-file";
 
 export default function FormatForm() {
 	const { setScreenLoader } = useFullScreenLoader();
-	const { sourceFile } = useSourceFile();
+	const [sourcePath] = useSourceFilePath();
 	const [destination, setDestination] = useState("");
 	const [format, setFormat] = useState<VideoFormat>("mp4");
 
@@ -53,7 +53,7 @@ export default function FormatForm() {
 
 		try {
 			await changeFormat({
-				source: sourceFile.path,
+				source: sourcePath,
 				destination: destination,
 				format,
 			});
