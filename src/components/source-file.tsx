@@ -49,40 +49,36 @@ export default function SourceFile() {
 		<div className="flex flex-col gap-2">
 			<Card>
 				<CardContent>
-					<div className="flex flex-col gap-2">
-						<Input
-							disabled
-							type="text"
-							placeholder="select video file"
-							defaultValue={sourcePath}
-						/>
-						<Button
-							onClick={selectFile}
-							className="cursor-pointer"
-							type="button"
-						>
-							select file
-						</Button>
-					</div>
+					{isPending ? (
+						<p>loading file info....</p>
+					) : fileInfo ? (
+						<>
+							<p>name: {fileInfo.format.filename}</p>
+							<p>size: {Number(fileInfo.format.size) / 1000} MB</p>
+							<p>duration: {fileInfo.format.duration}</p>
+						</>
+					) : (
+						<div className="flex flex-col gap-2">
+							<Input
+								disabled
+								type="text"
+								placeholder="select video file"
+								defaultValue={sourcePath}
+							/>
+							<Button
+								onClick={selectFile}
+								className="cursor-pointer"
+								type="button"
+							>
+								select file
+							</Button>
+						</div>
+					)}
 				</CardContent>
 			</Card>
 			<Card>
 				<CardContent>
-					{isPending ? (
-						<p>loading file info....</p>
-					) : (
-						<div>
-							{fileInfo ? (
-								<>
-									<p>name: {fileInfo.format.filename}</p>
-									<p>size: {Number(fileInfo.format.size) / 1000} MB</p>
-									<p>duration: {fileInfo.format.duration}</p>
-								</>
-							) : (
-								<p>select a file to see details</p>
-							)}
-						</div>
-					)}
+					GPU <input type="checkbox" />
 				</CardContent>
 			</Card>
 		</div>
