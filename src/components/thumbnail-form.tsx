@@ -5,11 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ffmpeg } from "@/lib/ffmpeg";
 import { useFullScreenLoader } from "@/components/full-screen-loader";
-import { useSourceFilePath } from "@/components/source-file";
+import { useSourceFile } from "@/components/source-file";
 
 export default function ThumbnailForm() {
 	const { setScreenLoader } = useFullScreenLoader();
-	const [sourcePath] = useSourceFilePath();
+	const [sourcePath] = useSourceFile();
 	const [path, setPath] = useState("");
 
 	const whereToSave = async () => {
@@ -28,7 +28,7 @@ export default function ThumbnailForm() {
 
 	const genThumbnail = async () => {
 		setScreenLoader(true);
-		await ffmpeg.generateThumbnails(sourcePath, path);
+		await ffmpeg.generateThumbnails(sourcePath.filePath, path);
 		setScreenLoader(false);
 	};
 

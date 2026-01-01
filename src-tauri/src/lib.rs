@@ -14,7 +14,6 @@ pub fn run() {
 
             // setup basic config for app
             window.set_title("thumbi")?;
-            window.set_resizable(false)?;
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())

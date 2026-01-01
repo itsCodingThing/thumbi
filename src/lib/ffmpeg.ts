@@ -63,14 +63,15 @@ class Ffmpeg {
 	}
 
 	async generateThumbnails(source: string, destination: string) {
-		const command = Command.sidecar("binaries/ffmpeg", [
+		const args = [
 			"-i",
 			source,
 			"-vf",
 			"fps=1/10",
 			`${destination}/thumbnail_%03d.jpg`,
-		]);
+		];
 
+		const command = Command.sidecar("binaries/ffmpeg", args);
 		await command.execute();
 	}
 
@@ -91,6 +92,7 @@ class Ffmpeg {
 
 		const output = await command.execute();
 		const response = output.stdout;
+		console.log(response);
 
 		const parsedResponse = FileInfoSchema.safeParse(JSON.parse(response));
 		if (!parsedResponse.success) {

@@ -5,16 +5,14 @@
 	"identifier": "com.thumbi.app",
 	"build": {
 		"beforeDevCommand": "bun run dev",
-		"devUrl": "http://localhost:1420",
 		"beforeBuildCommand": "bun run build",
+		"devUrl": "http://localhost:1420",
 		"frontendDist": "../dist"
 	},
 	"app": {
 		"windows": [
 			{
-				"title": "thumbi",
-				"width": 500,
-				"height": 600
+				"title": "thumbi"
 			}
 		],
 		"security": {

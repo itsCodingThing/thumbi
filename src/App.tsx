@@ -14,11 +14,11 @@ const tabs = {
 
 export default function App() {
 	return (
-		<>
-			<header className="flex justify-center">
+		<main className="min-h-svh bg-black">
+			<header className="mb-2 flex justify-center">
 				<img alt="app logo" src={logo} className="w-25 h-25" />
 			</header>
-			<main className="container min-h-svh px-4 py-2 bg-black flex flex-col gap-2">
+			<div className="container mx-auto flex flex-col gap-2">
 				<SourceFile />
 				<Tabs defaultValue={tabs.thumbnail.title}>
 					<TabsList>
@@ -39,9 +39,9 @@ export default function App() {
 						<ReencodeForm />
 					</TabsContent>
 				</Tabs>
-			</main>
+			</div>
 			<Toaster />
 			<FullScreenLoader />
-		</>
+		</main>
 	);
 }

@@ -5,18 +5,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { fileOpen } from "@/lib/file-dialog";
 import { type FileInfo, ffmpeg } from "@/lib/ffmpeg";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 
-const sourceFilePath = atom("");
+interface SourceFileState {
+	filePath: string;
+	fileInfo: FileInfo | null;
+}
 
-export function useSourceFilePath() {
-	return useAtom(sourceFilePath);
+const sourceFile = atom<SourceFileState>({
+	filePath: "",
+	fileInfo: null,
+});
+
+export function useSourceFile() {
+	return useAtom(sourceFile);
 }
 
 export default function SourceFile() {
-	const [sourcePath, setSourcePath] = useSourceFilePath();
+	const [sourceFile, setSourceFile] = useSourceFile();
 	const [isPending, startTransition] = useTransition();
-	const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
 
 	const selectFile = async () => {
 		try {
@@ -33,13 +40,13 @@ export default function SourceFile() {
 				try {
 					const result = await ffmpeg.probeVideo(blob);
 
-					setFileInfo(result);
+					setSourceFile((file) => ({ ...file, fileInfo: result }));
 				} catch (error) {
 					toast.error(`unable to probe file: ${error}`);
 				}
 			});
 
-			setSourcePath(blob);
+			setSourceFile((file) => ({ ...file, filePath: blob }));
 		} catch (error) {
 			toast.error(`unable to select path: ${error}`);
 		}
@@ -51,11 +58,11 @@ export default function SourceFile() {
 				<CardContent>
 					{isPending ? (
 						<p>loading file info....</p>
-					) : fileInfo ? (
+					) : sourceFile.fileInfo ? (
 						<>
-							<p>name: {fileInfo.format.filename}</p>
-							<p>size: {Number(fileInfo.format.size) / 1000} MB</p>
-							<p>duration: {fileInfo.format.duration}</p>
+							<p>name: {sourceFile.fileInfo.format.filename}</p>
+							<p>size: {Number(sourceFile.fileInfo.format.size) / 1000} MB</p>
+							<p>duration: {sourceFile.fileInfo.format.duration}</p>
 						</>
 					) : (
 						<div className="flex flex-col gap-2">
@@ -63,7 +70,7 @@ export default function SourceFile() {
 								disabled
 								type="text"
 								placeholder="select video file"
-								defaultValue={sourcePath}
+								defaultValue={sourceFile.filePath}
 							/>
 							<Button
 								onClick={selectFile}
@@ -78,7 +85,7 @@ export default function SourceFile() {
 			</Card>
 			<Card>
 				<CardContent>
-					GPU <input type="checkbox" />
+					GPU <input type="checkbox" defaultChecked={true} />
 				</CardContent>
 			</Card>
 		</div>

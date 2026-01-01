@@ -12,10 +12,12 @@ dist
 dist-ssr
 *.local
 src-tauri/binaries/
+target
 
 # Editor directories and files
-.helix/*
-.vscode/*
+.helix
+.vscode
+.zed
 !.vscode/extensions.json
 .idea
 .DS_Store

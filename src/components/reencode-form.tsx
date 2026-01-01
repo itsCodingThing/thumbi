@@ -18,11 +18,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { fileSave } from "@/lib/file-dialog";
 import { useFullScreenLoader } from "@/components/full-screen-loader";
-import { useSourceFilePath } from "@/components/source-file";
+import { useSourceFile } from "@/components/source-file";
 
 export default function ReencodeForm() {
 	const { setScreenLoader } = useFullScreenLoader();
-	const [sourcePath] = useSourceFilePath();
+	const [sourcePath] = useSourceFile();
 	const [destination, setDestination] = useState("");
 	const [format, setFormat] = useState<VideoFormat>("mp4");
 
