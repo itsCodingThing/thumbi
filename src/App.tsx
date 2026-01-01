@@ -1,10 +1,10 @@
 import "./App.css";
+import logo from "@/assets/thumbi_logo.png";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ThumbnailForm from "@/components/thumbnail-form";
-import FormatForm from "@/components/format-form";
+import ReencodeForm from "@/components/reencode-form";
 import SourceFile from "@/components/source-file";
 import { Toaster } from "@/components/ui/sonner";
-import logo from "@/assets/thumbi_logo.png";
 import FullScreenLoader from "@/components/full-screen-loader";
 
 const tabs = {
@@ -36,7 +36,7 @@ export default function App() {
 						<ThumbnailForm />
 					</TabsContent>
 					<TabsContent value={tabs.format.title}>
-						<FormatForm />
+						<ReencodeForm />
 					</TabsContent>
 				</Tabs>
 			</main>

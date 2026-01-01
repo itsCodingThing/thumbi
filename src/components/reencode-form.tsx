@@ -1,4 +1,11 @@
+import { toast } from "sonner";
 import { useState } from "react";
+import {
+	SupportedVideoFormats,
+	type VideoFormat,
+	isSupportedVideoFormat,
+	ffmpeg,
+} from "@/lib/ffmpeg";
 import {
 	Select,
 	SelectContent,
@@ -9,18 +16,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-	SupportedVideoFormats,
-	type VideoFormat,
-	changeFormat,
-	isSupportedVideoFormat,
-} from "@/lib/ffmpeg";
 import { fileSave } from "@/lib/file-dialog";
-import { toast } from "sonner";
 import { useFullScreenLoader } from "@/components/full-screen-loader";
 import { useSourceFilePath } from "@/components/source-file";
 
-export default function FormatForm() {
+export default function ReencodeForm() {
 	const { setScreenLoader } = useFullScreenLoader();
 	const [sourcePath] = useSourceFilePath();
 	const [destination, setDestination] = useState("");
@@ -52,7 +52,7 @@ export default function FormatForm() {
 		setScreenLoader(true);
 
 		try {
-			await changeFormat({
+			await ffmpeg.changeEncoding({
 				source: sourcePath,
 				destination: destination,
 				format,
