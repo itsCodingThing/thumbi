@@ -3,8 +3,8 @@ import { useState } from "react";
 import {
 	SupportedVideoFormats,
 	type VideoFormat,
+	changeEncoding,
 	isSupportedVideoFormat,
-	ffmpeg,
 } from "@/lib/ffmpeg";
 import {
 	Select,
@@ -52,11 +52,7 @@ export default function ReencodeForm() {
 		setScreenLoader(true);
 
 		try {
-			await ffmpeg.changeEncoding({
-				source: sourcePath,
-				destination: destination,
-				format,
-			});
+			await changeEncoding(sourcePath.filePath, destination, format);
 		} catch (error) {
 			toast.error("unable to change format");
 			console.log(error);

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { fileOpen } from "@/lib/file-dialog";
-import { type FileInfo, ffmpeg } from "@/lib/ffmpeg";
+import { type FileInfo, probeVideo } from "@/lib/ffmpeg";
 import { useTransition } from "react";
 
 interface SourceFileState {
@@ -38,7 +38,7 @@ export default function SourceFile() {
 
 			startTransition(async () => {
 				try {
-					const result = await ffmpeg.probeVideo(blob);
+					const result = await probeVideo(blob);
 
 					setSourceFile((file) => ({ ...file, fileInfo: result }));
 				} catch (error) {
@@ -61,8 +61,9 @@ export default function SourceFile() {
 					) : sourceFile.fileInfo ? (
 						<>
 							<p>name: {sourceFile.fileInfo.format.filename}</p>
-							<p>size: {Number(sourceFile.fileInfo.format.size) / 1000} MB</p>
-							<p>duration: {sourceFile.fileInfo.format.duration}</p>
+							<p>size: {sourceFile.fileInfo.format.size} MB</p>
+							<p>duration: {sourceFile.fileInfo.format.duration} Min</p>
+							<p>fps: {sourceFile.fileInfo.format.fps}</p>
 						</>
 					) : (
 						<div className="flex flex-col gap-2">

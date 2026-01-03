@@ -6,7 +6,6 @@ const showFullScreenLoading = atom(false);
 
 export function useFullScreenLoader() {
 	const [showScreenLoader, setScreenLoader] = useAtom(showFullScreenLoading);
-
 	return { showScreenLoader, setScreenLoader };
 }
 
