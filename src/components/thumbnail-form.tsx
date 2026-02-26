@@ -6,21 +6,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useFullScreenLoader } from "@/components/full-screen-loader";
 import { useSourceFile } from "@/components/source-file";
 import { generateThumbnails } from "@/lib/ffmpeg";
+import { Slider } from "@/components/ui/slider";
 
 export default function ThumbnailForm() {
 	const { setScreenLoader } = useFullScreenLoader();
 	const [sourceFile] = useSourceFile();
 	const [destination, setDestination] = useState("");
 	const [thumbs, setThumbs] = useState(0);
-
-	let maxFps = 0;
-	if (sourceFile.fileInfo) {
-		maxFps = Math.floor(
-			Number(sourceFile.fileInfo.format.duration) *
-				60 *
-				sourceFile.fileInfo.format.fps,
-		);
-	}
 
 	const whereToSave = async () => {
 		const blob = await fileOpen({
@@ -38,11 +30,9 @@ export default function ThumbnailForm() {
 
 	const genThumbnail = async () => {
 		setScreenLoader(true);
-
-		const step = Math.floor(maxFps / thumbs);
-		console.log(step);
-
-		await generateThumbnails(sourceFile.filePath, destination);
+		await generateThumbnails(sourceFile.filePath, destination, {
+			count: thumbs,
+		});
 		setScreenLoader(false);
 	};
 
@@ -52,14 +42,13 @@ export default function ThumbnailForm() {
 				<div className="grid grid-cols-2 gap-2">
 					{sourceFile.fileInfo ? (
 						<div className="col-span-2 flex gap-2 cursor-pointer">
-							<input
+							<Slider
 								className="w-full"
-								type="range"
 								min={1}
 								max={100}
-								onChange={(e) => {
-									const value = Number(e.currentTarget.value);
-									setThumbs(value);
+								defaultValue={[thumbs]}
+								onValueChange={(val) => {
+									setThumbs(val[0]);
 								}}
 							/>
 							<span>{thumbs}</span>

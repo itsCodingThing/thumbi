@@ -1,11 +1,21 @@
 import { atom, useAtom } from "jotai";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { fileOpen } from "@/lib/file-dialog";
 import { type FileInfo, probeVideo } from "@/lib/ffmpeg";
 import { useTransition } from "react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { FolderUploadIcon } from "@/components/icons";
 
 interface SourceFileState {
 	filePath: string;
@@ -55,6 +65,19 @@ export default function SourceFile() {
 	return (
 		<div className="flex flex-col gap-2">
 			<Card>
+				<CardHeader>
+					<CardTitle>File Info</CardTitle>
+					<CardDescription>basic stats of selected file</CardDescription>
+
+					{sourceFile.filePath && (
+						<CardAction>
+							<Button className="cursor-pointer" onClick={selectFile}>
+								<FolderUploadIcon />
+								Change
+							</Button>
+						</CardAction>
+					)}
+				</CardHeader>
 				<CardContent>
 					{isPending ? (
 						<p>loading file info....</p>
@@ -86,7 +109,10 @@ export default function SourceFile() {
 			</Card>
 			<Card>
 				<CardContent>
-					GPU <input type="checkbox" defaultChecked={true} />
+					<div className="flex items-center gap-2">
+						<Label htmlFor="gpu">GPU</Label>
+						<Switch id="gpu" className="cursor-pointer" />
+					</div>
 				</CardContent>
 			</Card>
 		</div>
